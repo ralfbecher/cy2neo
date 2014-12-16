@@ -1,4 +1,4 @@
-function Cy2NeoD3(config, graphId, sourceId, execId, urlSource) {
+function Cy2NeoD3(config, graphId, sourceId, execId, urlSource, renderGraph, cbResult) {
     function createEditor() {
 		return CodeMirror.fromTextArea(document.getElementById(sourceId), {
 		  parserfile: ["codemirror-cypher.js"],
@@ -23,21 +23,24 @@ function Cy2NeoD3(config, graphId, sourceId, execId, urlSource) {
 			neo.executeQuery(query,{},function(err,res) {
 				execButton.toggleClass('fa-spinner fa-spin fa-play-circle-o')
 				res = res || {}
-				var graph=res.graph;
-				if (graph) {
-					var c=$("#"+graphId);
-					c.empty();
-					neod3.render(graphId, c ,graph);
-				} else {
-					if (err) {
-						console.log(err);
-						if (err.length > 0) {
-							sweetAlert("Cypher error", err[0].code + "\n" + err[0].message, "error");
-						} else {
-							sweetAlert("Ajax " + err.statusText, "Status " + err.status + ": " + err.state(), "error");
+				if (renderGraph) {
+					var graph=res.graph;
+					if (graph) {
+						var c=$("#"+graphId);
+						c.empty();
+						neod3.render(graphId, c ,graph);
+					} else {
+						if (err) {
+							console.log(err);
+							if (err.length > 0) {
+								sweetAlert("Cypher error", err[0].code + "\n" + err[0].message, "error");
+							} else {
+								sweetAlert("Ajax " + err.statusText, "Status " + err.status + ": " + err.state(), "error");
+							}
 						}
 					}
 				}
+				cbResult(res);
 			});
 		} catch(e) {
 			console.log(e);
