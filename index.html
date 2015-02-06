@@ -35,7 +35,7 @@
 		//todo dynamic configuration
 		var config = {}
 		//config.neo4jUrl="http://localhost:7474/db/data";
-		new Cy2NeoD3(config,"graph","cypher","execute", function() { return $("#neo4jUrl").val(); });
+		new Cy2NeoD3(config,"graph","cypher","execute", function() { return $("#neo4jUrl").val(); }, true);
 	});
 </script>
 </body>

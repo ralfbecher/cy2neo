@@ -40,7 +40,7 @@ function Cy2NeoD3(config, graphId, sourceId, execId, urlSource, renderGraph, cbR
 						}
 					}
 				}
-				cbResult(res);
+				if(cbResult) cbResult(res);
 			});
 		} catch(e) {
 			console.log(e);
